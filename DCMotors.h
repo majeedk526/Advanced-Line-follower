@@ -10,6 +10,8 @@ class DCMotors{
   byte pid_val = 0;
   byte spConst = 100; //speed const
 
+  int LMSpeed, RMSpeed; // left and right motro speeds
+
   void configure(){
     pinMode(enL, OUTPUT);
     pinMode(inpL1,OUTPUT);
@@ -19,55 +21,18 @@ class DCMotors{
     pinMode(inpR2, OUTPUT);
     stopMoving();
   }
-  
-  void correctDrive(int cor){
-    analogWrite(enL, spConst+cor);
-    analogWrite(enR, spConst-cor);;
-  }
 
-  void driveForward(int cor){
-    analogWrite(enL,0);
-    analogWrite(enR,0);
+  void drive(int cor){
+
+    LMSpeed = spConst + cor;
+    RMSpeed = spConst - cor;
+    
+    analogWrite(enL,LMSpeed);
+    analogWrite(enR,RMSpeed);
     digitalWrite(inpL1,LOW);
     digitalWrite(inpL2,HIGH);
     digitalWrite(inpR1,HIGH);
     digitalWrite(inpR2,LOW);
-
-    correctDrive(cor);
-  }
-
-  void driveBack(int cor){
-    analogWrite(enL,0);
-    analogWrite(enR,0);
-    digitalWrite(inpL1,HIGH);
-    digitalWrite(inpL2,LOW);
-    digitalWrite(inpR1,LOW);
-    digitalWrite(inpR2,HIGH);
-
-    correctDrive(cor);
-  }
-
-
-  void turnLeft(){
-    analogWrite(enL,0);
-    analogWrite(enR,0);
-    digitalWrite(inpL1,LOW);
-    digitalWrite(inpL2,HIGH);
-    digitalWrite(inpR1,LOW);
-    digitalWrite(inpR2,HIGH);  
-    analogWrite(enL,spConst);
-    analogWrite(enR,spConst);  
-  }
-
-  void turnRight(){
-    analogWrite(enL,0);
-    analogWrite(enR,0);
-    digitalWrite(inpL1,HIGH);
-    digitalWrite(inpL2,LOW);
-    digitalWrite(inpR1,HIGH);
-    digitalWrite(inpR2,LOW);
-    analogWrite(enL,spConst);
-    analogWrite(enR,spConst);
   }
 
   void stopMoving(){

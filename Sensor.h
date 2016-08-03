@@ -1,10 +1,14 @@
 #include <Arduino.h>
 
-template<byte ps1, byte ps2, byte ps3, byte ps4, byte ps5, byte ps6, byte ps7, byte ps8, >
+template<byte ps1, byte ps2, byte ps3, byte ps4, byte ps5, byte ps6, byte ps7, byte ps8 >
+
+class Sensor{
+  
+
 public:
 
-byte error = 0;
 
+byte error = 0;
 void configure(){
 
   pinMode(ps1,INPUT);
@@ -31,4 +35,4 @@ void updateError(){
   
 }
 
-
+};
