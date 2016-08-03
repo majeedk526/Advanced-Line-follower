@@ -5,7 +5,8 @@ DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
 float Kp=0.6, Ki=0.1,Kd=0.4;
-float error=0, P=0, I=0, D=0, PID_value=0;
+float P=0, I=0, D=0, PID_value=0;
+int error=0;
 float previous_error=0, previous_I=0;
 //int sensor[8]={0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -27,8 +28,8 @@ void loop() {
 
     sensors.updateError();
     calculate_pid();
-    motors.drive(error);
-    delay(100);
+    motors.drive(PID_value);
+    delay(500);
 
 }
 
@@ -44,10 +45,10 @@ void calculate_pid()
     
     previous_error=error;
     
-    Serial.print("error : ");
-    Serial.print(error);
-    Serial.print("\t");
-
+    Serial.print("pidval : ");
+      Serial.print(PID_value);
+    Serial.println("\t");
+/**
     Serial.print("P : ");
     Serial.print(P);
     Serial.print("\t");
@@ -67,6 +68,6 @@ void calculate_pid()
     Serial.print("Prvs_error : ");
     Serial.print(previous_error);
     Serial.println();
-    
+   **/ 
 }
 

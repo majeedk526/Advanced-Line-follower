@@ -8,7 +8,7 @@ class Sensor{
 public:
 
 
-byte error = 0;
+int error = 0;
 void configure(){
 
   pinMode(ps1,INPUT);
