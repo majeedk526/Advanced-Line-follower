@@ -6,9 +6,8 @@ template <byte enL, byte inpL1, byte inpL2, byte enR, byte inpR1, byte inpR2 >
 class DCMotors{
 
   public:
-
-  byte pid_val = 0;
-  byte spConst = 100; //speed const
+  
+  byte spConst = 150; //speed const
 
   int LMSpeed, RMSpeed; // left and right motro speeds
 

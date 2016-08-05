@@ -4,7 +4,7 @@
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
-float Kp=0.6, Ki=0.1,Kd=0.4;
+float Kp=1, Ki=0,Kd=0;
 float P=0, I=0, D=0, PID_value=0;
 int error=0;
 float previous_error=0, previous_I=0;
@@ -36,7 +36,7 @@ void loop() {
 
 void calculate_pid()
 {
-    error = sensors.error;
+    error = sensors.error * 10;
     P = error;
     I = I + error;
     D = error - previous_error;
