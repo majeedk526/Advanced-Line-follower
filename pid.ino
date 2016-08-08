@@ -16,16 +16,15 @@ void motor_control(void);
 
 void setup() {
   // put your setup code here, to run once:
-
   motors.configure();
   sensors.configure();
   Serial.begin(9600);
-
+  
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+    phone();
     sensors.updateError();
     calculate_pid();
     motors.drive(PID_value);
@@ -36,7 +35,7 @@ void loop() {
 
 void calculate_pid()
 {
-    error = sensors.error * 10;
+    error = (sensors.error)*10;
     P = error;
     I = I + error;
     D = error - previous_error;
@@ -45,10 +44,14 @@ void calculate_pid()
     
     previous_error=error;
     
-    Serial.print("pidval : ");
-      Serial.print(PID_value);
-    Serial.println("\t");
-/**
+   // Serial.print("pidval : ");
+     // Serial.print(PID_value);
+    //Serial.println("\t");
+    /**Serial.print("\n");
+    Serial.print("PIDVal : ");
+    Serial.print(PID_value);
+    Serial.print("\t");
+
     Serial.print("P : ");
     Serial.print(P);
     Serial.print("\t");
@@ -61,9 +64,7 @@ void calculate_pid()
     Serial.print(D);
     Serial.print("\t");
 
-    Serial.print("PIDVal : ");
-    Serial.print(PID_value);
-    Serial.print("\t");
+    
 
     Serial.print("Prvs_error : ");
     Serial.print(previous_error);
@@ -71,3 +72,34 @@ void calculate_pid()
    **/ 
 }
 
+void phone()
+{
+  
+  if(Serial.available())
+    {
+      if(Serial.read()=='1'){
+          Ki+=0.1;
+          Serial.write("Ki value is incremented");
+      }
+      else if(Serial.read()=='0'){  
+          Kd+=1;
+          Serial.write("Kd value is incremented");
+      }
+      else if(Serial.read()=='2'){
+          Kp+=1;
+          Serial.write("Kp value is incremented");
+      }
+      else if(Serial.read()=='3'){
+          Ki-=0.1;
+          Serial.write("Ki value is decremented");
+      }
+      else if(Serial.read()=='4'){  
+          Kd-=1;
+          Serial.write("Kd value is decremented");
+      }
+      else if(Serial.read()=='5'){
+          Kp-=1;
+          Serial.write("Kp value is decremented");
+      }
+  }
+}
