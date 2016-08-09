@@ -1,6 +1,12 @@
 #include "DCMotors.h" 
 #include "Sensor.h"
 
+#define START 's'
+#define STOP 't'
+
+bool debug = false;
+bool startDrive = false;
+
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
@@ -8,27 +14,44 @@ float Kp=1, Ki=0,Kd=0;
 float P=0, I=0, D=0, PID_value=0;
 int error=0;
 float previous_error=0, previous_I=0;
-//int sensor[8]={0, 0, 0, 0, 0, 0, 0, 0};
 
 void read_sensor_values(void);
 void calculate_pid(void);
+void btDebug();
 void motor_control(void);
 
 void setup() {
-  // put your setup code here, to run once:
+  
   motors.configure();
   sensors.configure();
   Serial.begin(9600);
+
+  debug = true;
   
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-    phone();
+
+    if(debug){
+      btDebug();  
+    }
+    
     sensors.updateError();
     calculate_pid();
-    motors.drive(PID_value);
-    delay(500);
+
+    if(Serial.read() == START) {
+      startDrive = true;    
+    } 
+
+    if(Serial.read() == STOP){
+      startDrive = false;
+    }
+
+    if(startDrive){
+      motors.drive(PID_value);  
+    }
+    
+    delay(100);
 
 }
 
@@ -72,7 +95,7 @@ void calculate_pid()
    **/ 
 }
 
-void phone()
+void btDebug()
 {
   
   if(Serial.available())
