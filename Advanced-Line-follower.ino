@@ -10,10 +10,11 @@ bool startDrive = false;
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
-float Kp=1, Ki=0,Kd=0;
+float Kp=0.5, Ki=1,Kd=1;
 float P=0, I=0, D=0, PID_value=0;
 int error=0;
 float previous_error=0, previous_I=0;
+char c;
 
 void read_sensor_values(void);
 void calculate_pid(void);
@@ -31,37 +32,38 @@ void setup() {
 }
 
 void loop() {
-
-    if(debug){
-      btDebug();  
-    }
     
     sensors.updateError();
     calculate_pid();
 
-    if(Serial.read() == START) {
-      startDrive = true;    
-    } 
 
-    if(Serial.read() == STOP){
-      startDrive = false;
-    }
+    if(Serial.available()){
+        c = Serial.read();
+        Serial.println(c);
+        
+        if(c == START){ startDrive = true; }
+        else {startDrive = false;}
+        
+        if(debug){ btDebug(); }
+      }
 
-    if(startDrive){
-      motors.drive(PID_value);  
-    }
     
-    delay(100);
+
+    if(startDrive){ motors.drive(PID_value); 
+    }
+    else if(!startDrive){motors.stopMoving();
+    }
+    delay(10);
 
 }
 
 
 void calculate_pid()
 {
-    error = (sensors.error)*10;
+    error = (sensors.error);
     P = error;
-    I = I + error;
-    D = error - previous_error;
+    I = I + error*10;
+    D = (error - previous_error)/10;
     
     PID_value = (Kp*P) + (Ki*I) + (Kd*D);
     
@@ -97,32 +99,35 @@ void calculate_pid()
 
 void btDebug()
 {
-  
-  if(Serial.available())
-    {
-      if(Serial.read()=='1'){
+      if(c=='1'){
           Ki+=0.1;
-          Serial.write("Ki value is incremented");
+          Serial.print("Ki : ");
+          Serial.println(Ki);
       }
-      else if(Serial.read()=='0'){  
+      else if(c=='0'){  
           Kd+=1;
-          Serial.write("Kd value is incremented");
+          Serial.print("Kd : ");
+          Serial.println(Kd);
       }
-      else if(Serial.read()=='2'){
+      else if(c=='2'){
           Kp+=1;
-          Serial.write("Kp value is incremented");
+          Serial.print("Kp : ");
+          Serial.println(Kp);
       }
-      else if(Serial.read()=='3'){
+      else if(c=='3'){
           Ki-=0.1;
-          Serial.write("Ki value is decremented");
+          Serial.print("Ki : ");
+          Serial.println(Ki);
       }
-      else if(Serial.read()=='4'){  
+      else if(c=='4'){  
           Kd-=1;
-          Serial.write("Kd value is decremented");
+          Serial.print("Kd : ");
+          Serial.println(Kd);
       }
-      else if(Serial.read()=='5'){
+      else if(c=='5'){
           Kp-=1;
-          Serial.write("Kp value is decremented");
+          Serial.print("Kp : ");
+          Serial.println(Kp);
       }
-  }
 }
+

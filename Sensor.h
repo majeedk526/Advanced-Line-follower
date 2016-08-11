@@ -23,7 +23,7 @@ void configure(){
 
 void updateError(){
 
-  error = 0;
+  //error = 0;
   if(!digitalRead(ps1)) {error-=4;}
   if(!digitalRead(ps2)) {error-=3;}
   if(!digitalRead(ps3)) {error-=2;}

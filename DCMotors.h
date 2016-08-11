@@ -7,7 +7,7 @@ class DCMotors{
 
   public:
   
-  byte spConst = 150; //speed const
+  byte spConst = 70; //speed const
 
   int LMSpeed, RMSpeed; // left and right motro speeds
 
