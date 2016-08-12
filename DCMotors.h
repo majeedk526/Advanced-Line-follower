@@ -25,6 +25,20 @@ class DCMotors{
 
     LMSpeed = spConst + cor;
     RMSpeed = spConst - cor;
+
+    Serial.print("Lspeed : ");
+    Serial.print(LMSpeed);
+    Serial.print("\t");
+
+    Serial.print("Rspeed : ");
+    Serial.print(RMSpeed);
+    Serial.print("\t");
+    
+    if(LMSpeed < 0) {LMSpeed = 0;}
+    if(LMSpeed > 255) {LMSpeed = 255;}
+
+    if(RMSpeed < 0) {RMSpeed = 0;}
+    if(RMSpeed > 255) {RMSpeed = 255;}
     
     analogWrite(enL,LMSpeed);
     analogWrite(enR,RMSpeed);

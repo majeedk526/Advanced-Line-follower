@@ -10,9 +10,9 @@ bool startDrive = false;
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
-float Kp=0.5, Ki=1,Kd=1;
+float Kp=2.8, Ki=0,Kd=3;
 float P=0, I=0, D=0, PID_value=0;
-int error=0;
+float error=0;
 float previous_error=0, previous_I=0;
 char c;
 
@@ -34,26 +34,28 @@ void setup() {
 void loop() {
     
     sensors.updateError();
-    calculate_pid();
-
 
     if(Serial.available()){
         c = Serial.read();
-        Serial.println(c);
-        
-        if(c == START){ startDrive = true; }
-        else {startDrive = false;}
+     
+        if(c == START){ 
+          PID_value = 0;
+          startDrive = true; }
+        else {
+          
+          startDrive = false;}
         
         if(debug){ btDebug(); }
       }
 
-    
-
-    if(startDrive){ motors.drive(PID_value); 
+    if(startDrive){ 
+      calculate_pid();
+      motors.drive((int)PID_value); 
     }
-    else if(!startDrive){motors.stopMoving();
+    else if(!startDrive){
+      motors.stopMoving();
     }
-    delay(10);
+    delay(5);
 
 }
 
@@ -62,70 +64,47 @@ void calculate_pid()
 {
     error = (sensors.error);
     P = error;
-    I = I + error*10;
-    D = (error - previous_error)/10;
+    I = I + error*5;
+    D = (error - previous_error)/5;
     
     PID_value = (Kp*P) + (Ki*I) + (Kd*D);
     
-    previous_error=error;
-    
-   // Serial.print("pidval : ");
-     // Serial.print(PID_value);
-    //Serial.println("\t");
-    /**Serial.print("\n");
-    Serial.print("PIDVal : ");
+    Serial.print("PIDVAL : ");
     Serial.print(PID_value);
-    Serial.print("\t");
-
-    Serial.print("P : ");
-    Serial.print(P);
-    Serial.print("\t");
-
-    Serial.print("I : ");
-    Serial.print(I);
-    Serial.print("\t");
-
-    Serial.print("D : ");
-    Serial.print(D);
-    Serial.print("\t");
-
+    Serial.println("");
     
-
-    Serial.print("Prvs_error : ");
-    Serial.print(previous_error);
-    Serial.println();
-   **/ 
+    previous_error=error;
 }
 
 void btDebug()
 {
       if(c=='1'){
-          Ki+=0.1;
+          Ki+=0.001;
           Serial.print("Ki : ");
           Serial.println(Ki);
       }
       else if(c=='0'){  
-          Kd+=1;
+          Kd+=0.1;
           Serial.print("Kd : ");
           Serial.println(Kd);
       }
       else if(c=='2'){
-          Kp+=1;
+          Kp+=0.01;
           Serial.print("Kp : ");
           Serial.println(Kp);
       }
       else if(c=='3'){
-          Ki-=0.1;
+          Ki-=0.001;
           Serial.print("Ki : ");
           Serial.println(Ki);
       }
       else if(c=='4'){  
-          Kd-=1;
+          Kd-=0.1;
           Serial.print("Kd : ");
           Serial.println(Kd);
       }
       else if(c=='5'){
-          Kp-=1;
+          Kp-=0.01;
           Serial.print("Kp : ");
           Serial.println(Kp);
       }
