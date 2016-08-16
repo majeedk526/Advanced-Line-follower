@@ -7,7 +7,7 @@ class Sensor{
 
 public:
 
-
+byte vps[8] = {0,0,0,0,0,0,0,0};
 float error = 0;
 void configure(){
 
@@ -23,15 +23,34 @@ void configure(){
 
 void updateError(){
 
-  //error = 0;
-  if(!digitalRead(ps1)) {error-=2.5;}
-  if(!digitalRead(ps2)) {error-=1.5;}
-  if(!digitalRead(ps3)) {error-=1;}
-  if(!digitalRead(ps4)) {error-=0.5;}
-  if(!digitalRead(ps5)) {error+=0.5;}
-  if(!digitalRead(ps6)) {error+=1;}
-  if(!digitalRead(ps7)) {error+=1.5;}
-  if(!digitalRead(ps8)) {error+=2.5;}
+  vps[0] = digitalRead(ps1);
+  vps[1] = digitalRead(ps2);
+  vps[2] = digitalRead(ps3);
+  vps[3] = digitalRead(ps4);
+  vps[4] = digitalRead(ps5);
+  vps[5] = digitalRead(ps6);
+  vps[6] = digitalRead(ps7);
+  vps[7] = digitalRead(ps8);
+  
+
+  if(!vps[0] && !vps[1] && !vps[2]){
+    error = -20; //turn left
+    return;
+    }
+  if(!vps[0]) {error=-13;}
+  if(!vps[1]) {error=-6;}
+  if(!vps[2]) {error=-3;}
+  if(!vps[3]) {error=-1;}
+  if(!vps[4]) {error=1;}
+  if(!vps[5]) {error=3;}
+
+  if(!vps[5] && !vps[6] && !vps[7]){
+    error = 20; //turn right
+    return;
+    }
+     
+  if(!vps[6]) {error=6;}
+  if(!vps[7]) {error=13;}
   
 }
 

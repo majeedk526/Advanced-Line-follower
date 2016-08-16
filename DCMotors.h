@@ -9,7 +9,7 @@ class DCMotors{
   
   byte spConst = 70; //speed const
 
-  int LMSpeed, RMSpeed; // left and right motro speeds
+  int LMSpeed, RMSpeed; // left and right motor speeds
 
   void configure(){
     pinMode(enL, OUTPUT);
@@ -25,15 +25,7 @@ class DCMotors{
 
     LMSpeed = spConst + cor;
     RMSpeed = spConst - cor;
-
-    Serial.print("Lspeed : ");
-    Serial.print(LMSpeed);
-    Serial.print("\t");
-
-    Serial.print("Rspeed : ");
-    Serial.print(RMSpeed);
-    Serial.print("\t");
-    
+   
     if(LMSpeed < 0) {LMSpeed = 0;}
     if(LMSpeed > 255) {LMSpeed = 255;}
 
@@ -56,6 +48,14 @@ class DCMotors{
     digitalWrite(inpR1,LOW);
     digitalWrite(inpR2,LOW);
   }
+
+  void turn90(int cor){
+
+    stopMoving();
+    drive(cor);
+
+    delay(220);
+    }
   
 };
 
