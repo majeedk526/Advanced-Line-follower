@@ -33,24 +33,24 @@ void updateError(){
   vps[7] = digitalRead(ps8);
   
 
-  if(!vps[0] && !vps[1] && !vps[2]){
+  /**if(!vps[0] && !vps[1] && !vps[2]){
     error = -20; //turn left
     return;
-    }
-  if(!vps[0]) {error=-13;}
-  if(!vps[1]) {error=-6;}
-  if(!vps[2]) {error=-3;}
-  if(!vps[3]) {error=-1;}
-  if(!vps[4]) {error=1;}
-  if(!vps[5]) {error=3;}
+    }**/
+  if(!vps[0]) {error+=-10;}
+  if(!vps[1]) {error+=-6;}
+  if(!vps[2]) {error+=-4;}
+  if(!vps[3]) {error+=-2;}
+  if(!vps[4]) {error+=2;}
+  if(!vps[5]) {error+=4;}
 
-  if(!vps[5] && !vps[6] && !vps[7]){
+  /**if(!vps[5] && !vps[6] && !vps[7]){
     error = 20; //turn right
     return;
-    }
+    }**/
      
-  if(!vps[6]) {error=6;}
-  if(!vps[7]) {error=13;}
+  if(!vps[6]) {error+=6;}
+  if(!vps[7]) {error+=10;}
   
 }
 

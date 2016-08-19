@@ -12,16 +12,12 @@ DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
 float Kp=3.21, Ki=0,Kd=6.3;
+
 float P=0, I=0, D=0, PID_value=0;
 float error=0;
 float previous_error=0, previous_I=0;
 char c;
-float speedmlp = 0.0;
-
-void read_sensor_values(void);
-void calculate_pid(void);
-void btDebug();
-void motor_control(void);
+//float speedmlp = 0.0;
 
 void setup() {
   
@@ -39,10 +35,7 @@ void loop() {
         c = Serial.read();
      
         if(c == START){ 
-          sensors.error = 0;
-          PID_value = 0;
-          speedmlp=0;
-          I=0;
+          invalidate();
           startDrive = true; }
         else {
           
@@ -60,43 +53,47 @@ void loop() {
         else {
             motors.turn90((int)PID_value);
             is90 = false;
-            sensors.error = 0;
-            PID_value = 0;
-          }
-       
+            invalidate();
+          }   
     }
     else if(!startDrive){
       motors.stopMoving();
     }
-    delay(5);
+    delay(10);
 
 }
 
 
+void invalidate(){
+  sensors.error = 0;
+   PID_value = 0;
+   I=0;
+}
+
 void calculate_pid()
 {
 
-    /**if(speedmlp<1.5){
-      speedmlp+=0.001;
-      }**/
+    //if(speedmlp<1.4){
+      //speedmlp+=0.001;
+      //}
     error = (sensors.error);
+    Serial.println(error);
 
     if(error>16 || error<-16){//error*=1.5;
-    is90 = true;
-    } //detect 90 degree
+      is90 = true;
+    } //detect 90/270 degree
     
-/**
-    if(error<0){error += -speedmlp;}
-    else if(error>0) {error += speedmlp;}
-   **/ 
+
+    //if(error<0){error += -speedmlp;}
+    //else if(error>0) {error += speedmlp;}
+    
     P = error;
-    I = I + error*5;
-    D = (error - previous_error)/5;
+    I = I + error*10;
+    D = (error - previous_error)/10;
     
     PID_value = (Kp*P) + (Ki*I) + (Kd*D);
     
     //Serial.println(PID_value);
-    
     
     previous_error=error;
 }
