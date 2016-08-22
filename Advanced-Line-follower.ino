@@ -11,7 +11,7 @@ bool is90 = false;
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
-float Kp=3.21, Ki=0,Kd=6.3;
+float Kp=3.0, Ki=0,Kd=0;
 
 float P=0, I=0, D=0, PID_value=0;
 float error=0;
@@ -57,9 +57,10 @@ void loop() {
           }   
     }
     else if(!startDrive){
+      invalidate();
       motors.stopMoving();
     }
-    delay(10);
+    delay(5);
 
 }
 
@@ -88,13 +89,11 @@ void calculate_pid()
     //else if(error>0) {error += speedmlp;}
     
     P = error;
-    I = I + error*10;
-    D = (error - previous_error)/10;
+    I = I + error*5;
+    D = (error - previous_error)/5;
     
     PID_value = (Kp*P) + (Ki*I) + (Kd*D);
-    
-    //Serial.println(PID_value);
-    
+        
     previous_error=error;
 }
 
