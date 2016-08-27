@@ -38,14 +38,14 @@ void updateError(){
     return;
     }
     
-  if(!vps[0]) {error=-10;}
-  if(!vps[1]) {error=-6;}
-  if(!vps[2]) {error=-2;}
-  if(!vps[3]) {error=-1;}
-  if(!vps[4]) {error=1;}
-  if(!vps[5]) {error=2;}
-  if(!vps[6]) {error=6;}
-  if(!vps[7]) {error=10;}
+  if(!vps[0]) {error=-15;}
+  if(!vps[1]) {error=-7;}
+  if(!vps[2]) {error=-5;}
+  if(!vps[3]) {error=-2;}
+  if(!vps[4]) {error=2;}
+  if(!vps[5]) {error=5;}
+  if(!vps[6]) {error=7;}
+  if(!vps[7]) {error=15;}
 
   if(!vps[5] && !vps[6] && !vps[7]){
     error = 20; //turn right
