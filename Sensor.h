@@ -9,6 +9,9 @@ public:
 
 byte vps[8] = {0,0,0,0,0,0,0,0};
 float error = 0;
+bool is90 = false;
+bool is135 = false;
+
 void configure(){
 
   pinMode(ps1,INPUT);
@@ -34,23 +37,39 @@ void updateError(){
   
 
   if(!vps[0] && !vps[1] && !vps[2]){
-    error = -20; //turn left
+    error = -10; //turn left
+    is90 = true;
     return;
     }
-    
-  if(!vps[0]) {error=-15;}
-  if(!vps[1]) {error=-7;}
-  if(!vps[2]) {error=-5;}
-  if(!vps[3]) {error=-2;}
-  if(!vps[4]) {error=2;}
-  if(!vps[5]) {error=5;}
-  if(!vps[6]) {error=7;}
-  if(!vps[7]) {error=15;}
 
   if(!vps[5] && !vps[6] && !vps[7]){
-    error = 20; //turn right
+    error = 10; //turn right
+    is90 = true;
     return;
     }
+
+    if(!vps[0] && vps[1] && !vps[2]){
+    //error = -10; //turn left
+    //is35 = true;
+    //return;
+    }
+
+    if(!vps[5] && vps[6] && !vps[7]){
+    //error = 10; //turn right
+    //is135 = true;
+    //return;
+    }
+
+  if(!vps[0]) {error=-4;}
+  if(!vps[1]) {error=-3;}
+  if(!vps[2]) {error=-2;}
+  if(!vps[3]) {error=-1;}
+  if(!vps[4]) {error=1;}
+  if(!vps[5]) {error=2;}
+  if(!vps[6]) {error=3;}
+  if(!vps[7]) {error=4;}
+
+  
 }
 
 };
