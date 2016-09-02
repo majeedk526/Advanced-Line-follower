@@ -4,14 +4,14 @@
 #define START 's'
 #define STOP 't'
 
-bool debug = false;
+bool debug = true;
 bool startDrive = false;
 
 
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
-float Kp=10, Ki=2 ,Kd=0.01;
+float Kp=8, Ki=6 ,Kd=0.03;
 
 float P=0, I=0, D=0, PID_value=0;
 float error=0;
