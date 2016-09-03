@@ -1,11 +1,16 @@
+#include <EnableInterrupt.h>
+
 #include "DCMotors.h" 
 #include "Sensor.h"
 
 #define START 's'
 #define STOP 't'
+#define isrPinRight 8
+#define isrPinLeft 3
 
 bool debug = true;
 bool startDrive = false;
+bool isrInProcess  = false;
 
 
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
@@ -25,11 +30,15 @@ void setup() {
   sensors.configure();
   Serial.begin(9600);
 
+  
+
   debug = false;
   
 }
 
 void loop() {
+
+    while(isrInProcess);
     
     if(Serial.available()){
         c = Serial.read();
@@ -51,10 +60,19 @@ void loop() {
         motors.drive((int)PID_value);  
         }
        else if(sensors.is90 && !sensors.is135 && !sensors.isCross){
+
+           if(error > 0 ){ //turn right
+
+                  enableInterrupt(isrPinLeft, isrRightTurnComplete, FALLING );
+            
+            } else if (error < 0){
+
+                  enableInterrupt(isrPinRight, isrLeftTurnComplete, FALLING );
+                
+              } 
+           isrInProcess = true;   
            motors.turn90((int)PID_value);
            
-           sensors.is90 = false;
-           invalidate();
         }
         else if (sensors.is135 && !sensors.is90 && !sensors.isCross){
             motors.turn135((int) PID_value);
@@ -86,37 +104,35 @@ void invalidate(){
 void calculate_pid()
 {
 
-    //if(speedmlp<1.4){
-      //speedmlp+=0.001;
-      //}
     error = (sensors.error);
-    Serial.print(error);
-
-   // if(error == 3 || error == -3 || error == 5 || error == -5){motors.spConst = 60;}
-    //if(error == 1 || error == -1 || error == 2 || error == -2){motors.spConst = 85;}
-    
-    //if(error>=13 || error<=-13){//error*=1.5;
-      //is90 = true;
-    //} //detect 90/270 degree
-    
-
-    //if(error<0){error += -speedmlp;}
-    //else if(error>0) {error += speedmlp;}
-    
+    //Serial.print(error);
+ 
     P = error;
     I = I + error*0.001;
     D = (error - previous_error)/.001;
     
     PID_value = (Kp*P) + (Ki*I) + (Kd*D);
-
-    //if(PID_value>= 35){ PID_value = 35;}
-    //if(PID_value <= -35){PID_value = -35;}
-    
-    //Serial.print(",");
-    //Serial.println(PID_value);
         
     previous_error=error;
 }
+
+void isrRightTurnComplete(){
+  
+    motors.stopMoving();
+    disableInterrupt(isrPinLeft);
+    sensors.is90 = false;
+    invalidate();
+    isrInProcess = false;
+  }
+
+void isrLeftTurnComplete(){
+  
+    motors.stopMoving();
+    disableInterrupt(isrPinRight);
+    sensors.is90 = false;
+    invalidate();
+    isrInProcess = false;
+  }
 
 void btDebug()
 {

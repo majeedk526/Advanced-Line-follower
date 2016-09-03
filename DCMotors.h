@@ -55,7 +55,7 @@ class DCMotors{
     delay(2);
     drive(cor);
 
-    delay(230);
+    //delay(230);
     }
 
   void turn135(int cor){
@@ -71,6 +71,8 @@ class DCMotors{
       drive(0);
       delay(10);
       }
+
+      
   
 };
 
