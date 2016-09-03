@@ -61,7 +61,7 @@ void updateError(){
       return;
    }
 
-   if( (!vps[0] || ![vps[1]]) && !vps[2] && !vps[3] && !vps[4] && !vps[5] && (!vps[6] || ![vps[7])){
+   if( (!vps[0] || !vps[1]) && !vps[2] && !vps[3] && !vps[4] && !vps[5] && (!vps[6] || !vps[7])){
     
       isCross = true;
       return;
