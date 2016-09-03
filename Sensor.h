@@ -11,6 +11,7 @@ byte vps[8] = {0,0,0,0,0,0,0,0};
 float error = 0;
 bool is90 = false;
 bool is135 = false;
+bool isCross = false;
 
 void configure(){
 
@@ -36,38 +37,45 @@ void updateError(){
   vps[7] = digitalRead(ps8);
   
 
-  if(!vps[0] && !vps[1] && !vps[2] && !vps[3]){
-    error = -8; //turn left
+  if(!vps[0] && !vps[1] && !vps[2] && !vps[3] && vps[7] && vps[6] && vps[5]){
+    error = -5; //turn left
     is90 = true;
     return;
     }
 
-  if(!vps[4] && !vps[5] && !vps[6] && !vps[7]){
-    error = 8; //turn right
+  if(!vps[4] && !vps[5] && !vps[6] && !vps[7] && vps[0] && vps[1] && vps[2]){
+    error = 5; //turn right
     is90 = true;
     return;
     }
 
-    if(!vps[0] && vps[1] && !vps[2] && !vps[3]){
-    //error = -10; //turn left
-    //is35 = true;
-    //return;
+   if(!vps[0] && (vps[1] || vps[2]) && !vps[3]){
+      error = -5; //turn left
+      is135 = true;
+      return;
+   }
+
+   if(!vps[4] && (vps[5] || vps[6]) && !vps[7]){
+      error = 5; //turn right
+      is135 = true;
+      return;
+   }
+
+   if(!vps[2] && !vps[3] && !vps[4] && !vps[5]){
+    
+      isCross = true;
+      return;
+    
     }
 
-    if(!vps[4] && !vps[5] && vps[6] && !vps[7]){
-    //error = 10; //turn right
-    //is135 = true;
-    //return;
-    }
-
-  if(!vps[0]) {error=-5;}
-  if(!vps[1]) {error=-3.5;}
-  if(!vps[2]) {error=-2;}
-  if(!vps[3]) {error=-1;}
-  if(!vps[4]) {error=1;}
+  if(!vps[0]) {error=-3.5;}
+  if(!vps[1]) {error=-3;}
+  if(!vps[2]) {error=-1;}
+  if(!vps[3]) {error=-0.5;}
+  if(!vps[4]) {error=0.5;}
   if(!vps[5]) {error=2;}
-  if(!vps[6]) {error=3.5;}
-  if(!vps[7]) {error=5;}
+  if(!vps[6]) {error=3;}
+  if(!vps[7]) {error=3.5;}
 
   
 }

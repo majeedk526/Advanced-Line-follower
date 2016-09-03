@@ -7,7 +7,7 @@ class DCMotors{
 
   public:
   
-  byte spConst = 60; //speed const
+  byte spConst = 55; //speed const
 
   int LMSpeed, RMSpeed; // left and right motor speeds
 
@@ -55,7 +55,7 @@ class DCMotors{
     delay(2);
     drive(cor);
 
-    delay(180);
+    delay(210);
     }
 
   void turn135(int cor){
@@ -63,8 +63,14 @@ class DCMotors{
       stopMoving();
       delay(2);
       drive(cor);
-      delay(170);
+      delay(235);
     }
+
+    void driveCross(){
+      
+      drive(0);
+      delay(10);
+      }
   
 };
 

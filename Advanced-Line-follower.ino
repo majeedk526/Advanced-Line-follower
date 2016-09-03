@@ -11,7 +11,7 @@ bool startDrive = false;
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<2,3,4,5,6,7,8,9> sensors;
 
-float Kp=8, Ki=6 ,Kd=0.03;
+float Kp=8, Ki=5 ,Kd=0.03;
 
 float P=0, I=0, D=0, PID_value=0;
 float error=0;
@@ -47,21 +47,26 @@ void loop() {
     if(startDrive){ 
       sensors.updateError();
       calculate_pid();
-      if(!sensors.is90 && !sensors.is135){
+      if(!sensors.is90 && !sensors.is135 && !sensors.isCross){
         motors.drive((int)PID_value);  
         }
-       else if(sensors.is90 && !sensors.is135){
+       else if(sensors.is90 && !sensors.is135 && !sensors.isCross){
            motors.turn90((int)PID_value);
            //motors.stopMoving();
            sensors.is90 = false;
            invalidate();
         }
-        else if (sensors.is135 && !sensors.is90){
+        else if (sensors.is135 && !sensors.is90 && !sensors.isCross){
             motors.turn135((int) PID_value);
             //motors.stopMoving();
             sensors.is135 = false;
             invalidate();          
-        }   
+        }
+        else if ( sensors.isCross && !sensors.is135 && !sensors.is90){
+            motors.driveCross();
+            sensors.isCross = false;
+            invalidate();
+          }   
     }
     else if(!startDrive){
       invalidate();
