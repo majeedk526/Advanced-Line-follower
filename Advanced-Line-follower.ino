@@ -52,13 +52,13 @@ void loop() {
         }
        else if(sensors.is90 && !sensors.is135 && !sensors.isCross){
            motors.turn90((int)PID_value);
-           //motors.stopMoving();
+           
            sensors.is90 = false;
            invalidate();
         }
         else if (sensors.is135 && !sensors.is90 && !sensors.isCross){
             motors.turn135((int) PID_value);
-            //motors.stopMoving();
+            
             sensors.is135 = false;
             invalidate();          
         }
