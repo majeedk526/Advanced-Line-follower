@@ -8,9 +8,9 @@ class Sensor{
 public:
 
 byte vps[8] = {0,0,0,0,0,0,0,0};
-float error = 0;
-bool is90 = false;
-bool is135 = false;
+volatile float error = 0;
+volatile bool is90 = false;
+volatile bool is135 = false;
 bool isCross = false;
 
 void configure(){
@@ -51,14 +51,14 @@ void updateError(){
     return;
     }
 
-   if(!vps[0] && (vps[1] || vps[2]) && !vps[3]){
-      error = -5; //turn left
+   if((!vps[0] || !vps[1]) && vps[2] && (!vps[3] || !vps[4]){
+      error = -1; //turn left
       is135 = true;
       return;
    }
 
-   if(!vps[4] && (vps[5] || vps[6]) && !vps[7]){
-      error = 5; //turn right
+   if((!vps[3] || !vps[4]) && vps[5] && (!vps[6] || !vps[7])){
+      error = 1; //turn right
       is135 = true;
       return;
    }

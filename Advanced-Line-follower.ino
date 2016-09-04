@@ -10,7 +10,7 @@
 
 bool debug = true;
 bool startDrive = false;
-bool isrInProcess  = false;
+volatile bool isrInProcess  = false;
 
 
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
@@ -18,7 +18,9 @@ Sensor<2,3,4,5,6,7,8,9> sensors;
 
 float Kp=8, Ki=5 ,Kd=0.03;
 
-float P=0, I=0, D=0, PID_value=0;
+float P=0, D=0;
+volatile float PID_value=0;
+volatile float I=0;
 float error=0;
 float previous_error=0, previous_I=0;
 char c;
@@ -29,8 +31,6 @@ void setup() {
   motors.configure();
   sensors.configure();
   Serial.begin(9600);
-
-  
 
   debug = false;
   
@@ -54,6 +54,7 @@ void loop() {
       }
       
     if(startDrive){ 
+      Serial.println("startdrive true");
       sensors.updateError();
       calculate_pid();
       if(!sensors.is90 && !sensors.is135 && !sensors.isCross){
