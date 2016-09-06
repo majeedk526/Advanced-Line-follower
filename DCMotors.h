@@ -49,27 +49,30 @@ class DCMotors{
     digitalWrite(inpR2,LOW);
   }
 
-  void turn90(int cor){
+  void turn(int cor, int angle){
 
     stopMoving();
     delay(2);
-    drive(cor);
 
-    //delay(230);
+    Serial.print("cor : ");
+    Serial.println(cor);
+    if(cor>0 && angle == 90){ drive(23); }
+    else if(cor<0 && angle == 90) {drive(-23);}
+    else if(cor>0 && angle == 135) {drive(30);}
+    else if(cor<0 && angle == 135) {drive(-30);}
     }
 
   void turn135(int cor){
 
-      stopMoving();
-      delay(2);
-      drive(cor);
-      delay(235);
+      //delay(2);
+      //drive(cor);
+      //delay(235);
     }
 
     void driveCross(){
       
       drive(0);
-      delay(10);
+      delay(30);
       }
 
       
