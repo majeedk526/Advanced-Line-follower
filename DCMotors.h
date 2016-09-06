@@ -49,9 +49,35 @@ class DCMotors{
     digitalWrite(inpR2,LOW);
   }
 
-  void turn(int cor, int angle){
+  void turn(int cor){
 
     stopMoving();
+    delay(1);
+
+     if(cor>0){
+
+      analogWrite(enL,65);
+      analogWrite(enR,0);
+      digitalWrite(inpL1,LOW);
+      digitalWrite(inpL2,HIGH);
+      digitalWrite(inpR1,HIGH);
+      digitalWrite(inpR2,LOW);
+      
+      
+      //drive(22);
+      
+      }
+     else if(cor<0){
+      analogWrite(enL,0);
+      analogWrite(enR,65);
+      digitalWrite(inpL1,LOW);
+      digitalWrite(inpL2,HIGH);
+      digitalWrite(inpR1,HIGH);
+      digitalWrite(inpR2,LOW);
+      //drive(-22);
+     }
+
+   /** stopMoving();
     delay(2);
 
     Serial.print("cor : ");
@@ -60,6 +86,7 @@ class DCMotors{
     else if(cor<0 && angle == 90) {drive(-23);}
     else if(cor>0 && angle == 135) {drive(30);}
     else if(cor<0 && angle == 135) {drive(-30);}
+    **/
     }
 
   void turn135(int cor){
