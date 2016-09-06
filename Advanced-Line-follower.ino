@@ -51,19 +51,20 @@ void loop() {
         if(debug){ btDebug(); }
       }
 
-      while(isrInProcess){
-        delay(1);
-        Serial.println("looping");
-        return;}
+      
       
     if(startDrive){ 
       //Serial.println("startdrive true");
       sensors.updateError();
       calculate_pid();
 
-      if(sensors.isTurnRequired){
-          delay(1);
+      if(isrInProcess){
+              delay(1);
+              Serial.println("looping");
+              return;
+        }
 
+      if(sensors.isTurnRequired){
           Serial.println(error);
            if(error > 0 ){ //turn right
                    Serial.println("isr right begins");
@@ -80,41 +81,7 @@ void loop() {
         } else {
             motors.drive((int)PID_value);
           
-          }
-
-      
-      /**
-      if(!sensors.is90 && !sensors.is135 && !sensors.isCross){
-        motors.drive((int)PID_value);  
-        }
-       else if((sensors.is90 || sensors.is135) && !sensors.isCross){
-            
-            Serial.println(error);
-           if(error > 0 ){ //turn right
-                   Serial.println("isr right begins");
-                  enableInterrupt(isrPinLeft, isrRightTurnComplete, FALLING );
-            
-            } else if (error < 0){
-                  Serial.println("isr left begins");
-                  enableInterrupt(isrPinRight, isrLeftTurnComplete, FALLING );
-                
-              }
-           isrInProcess = true;
-           if(sensors.is90){
-               motors.turn((int)PID_value, 90);
-            } 
-           else if (sensors.is135){
-              delay(5);
-              motors.turn((int)PID_value, 135);
-            }  
-           
-           
-        }
-        else if ( sensors.isCross && !sensors.is135 && !sensors.is90){
-            motors.driveCross();
-            sensors.isCross = false;
-            invalidate();
-          }  **/ 
+          } 
     }
     else if(!startDrive){
       invalidate();
@@ -149,25 +116,29 @@ void isrRightTurnComplete(){
   
     motors.stopMoving();
     disableInterrupt(isrPinLeft);
-   // sensors.is90 = false;
-    //sensors.is135 = false;
     sensors.isTurnRequired = false;
     invalidate();
     isrInProcess = false;
-    //Serial.println("isr right ends");
   }
 
 void isrLeftTurnComplete(){
   
     motors.stopMoving();
     disableInterrupt(isrPinRight);
-    //sensors.is90 = false;
-    //sensors.is135 = false;
     sensors.isTurnRequired = false;
     invalidate();
     isrInProcess = false;
-    //Serial.println("isr left ends");
   }
+
+  void deactivateInterrupt(){
+    
+    motors.stopMoving();
+    disableInterrupt(isrPinRight);
+    disableInterrupt(isrPinLeft);
+    invalidate();
+    isrInProcess = false;
+    
+    }
 
 void btDebug()
 {

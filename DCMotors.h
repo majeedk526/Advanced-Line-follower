@@ -7,7 +7,8 @@ class DCMotors{
 
   public:
   
-  byte spConst = 55; //speed const
+  byte spConst = 62; //speed const
+  byte tunrSpeed = 45;
 
   int LMSpeed, RMSpeed; // left and right motor speeds
 
@@ -52,11 +53,11 @@ class DCMotors{
   void turn(int cor){
 
     stopMoving();
-    delay(1);
+    delay(2);
 
      if(cor>0){
 
-      analogWrite(enL,65);
+      analogWrite(enL,60);
       analogWrite(enR,0);
       digitalWrite(inpL1,LOW);
       digitalWrite(inpL2,HIGH);
@@ -69,40 +70,13 @@ class DCMotors{
       }
      else if(cor<0){
       analogWrite(enL,0);
-      analogWrite(enR,65);
+      analogWrite(enR,60);
       digitalWrite(inpL1,LOW);
       digitalWrite(inpL2,HIGH);
       digitalWrite(inpR1,HIGH);
       digitalWrite(inpR2,LOW);
       //drive(-22);
      }
-
-   /** stopMoving();
-    delay(2);
-
-    Serial.print("cor : ");
-    Serial.println(cor);
-    if(cor>0 && angle == 90){ drive(23); }
-    else if(cor<0 && angle == 90) {drive(-23);}
-    else if(cor>0 && angle == 135) {drive(30);}
-    else if(cor<0 && angle == 135) {drive(-30);}
-    **/
     }
-
-  void turn135(int cor){
-
-      //delay(2);
-      //drive(cor);
-      //delay(235);
-    }
-
-    void driveCross(){
-      
-      drive(0);
-      delay(30);
-      }
-
-      
-  
 };
 
