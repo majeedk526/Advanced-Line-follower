@@ -24,7 +24,6 @@ volatile float I=0;
 float error=0;
 float previous_error=0, previous_I=0;
 char c;
-//float speedmlp = 0.0;
 
 void setup() {
   
@@ -54,7 +53,6 @@ void loop() {
       
       
     if(startDrive){ 
-      //Serial.println("startdrive true");
       sensors.updateError();
       calculate_pid();
 
@@ -100,9 +98,7 @@ void invalidate(){
 void calculate_pid()
 {
 
-    error = (sensors.error);
-    //Serial.print(error);
- 
+    error = (sensors.error)
     P = error;
     I = I + error*0.001;
     D = (error - previous_error)/.001;
