@@ -35,21 +35,21 @@ void updateError(){
   if(!vps[0] && vps[4]) {
       isTurnRequired = true;
       error = -1; // left turn
-      Serial.println("left turn required");
+      //Serial.println("left turn required");
       return;
     } 
   else if (!vps[4] && vps[0]){
       isTurnRequired = true;
       error = 1; // right turn
-      Serial.println("right turn required");
+      //Serial.println("right turn required");
       return;
     }
 
-  if(!vps[0]) {error=-1.1;}
-  if(!vps[1]) {error=-0.4;}
+  if(!vps[0]) {error=-1;}
+  if(!vps[1]) {error=-0.3;}
   if(!vps[2]) {error=0.15;}
-  if(!vps[3]) {error=0.5;}
-  if(!vps[4]) {error=1.1;}
+  if(!vps[3]) {error=0.3;}
+  if(!vps[4]) {error=1;}
   
 }
 

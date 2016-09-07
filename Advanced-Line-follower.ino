@@ -5,7 +5,7 @@
 
 #define START 's'
 #define STOP 't'
-#define isrPinRight 4
+#define isrPinRight 3
 #define isrPinLeft 5
 
 bool debug = false;
@@ -16,7 +16,7 @@ volatile bool isrInProcess  = false;
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
 Sensor<6,5,4,3,2> sensors;
 
-float Kp=8, Ki=5 ,Kd=0.03;
+float Kp=7.5, Ki=5 ,Kd=0.11;
 
 float P=0, D=0;
 volatile float PID_value=0;
@@ -33,9 +33,8 @@ void setup() {
 
   debug = false;
 
-  pinMode(13,OUTPUT);
-  digitalWrite(13,HIGH);
-
+  delay(1000);
+  
   invalidate();
   
 }
@@ -43,7 +42,7 @@ void setup() {
 void loop() {
 
 
-      if(Serial.available()){
+     /** if(Serial.available()){
         c = Serial.read();
      
         if(c == START){ 
@@ -54,27 +53,27 @@ void loop() {
           startDrive = false;}
         
         if(debug){ btDebug(); }
-      }
+      }**/
 
-      if(startDrive){
+      //if(startDrive){
+
+      if(isrInProcess){
+              delay(1);
+              //Serial.println("looping");
+              return;
+        }
      
       sensors.updateError();
       calculate_pid();
 
-      if(isrInProcess){
-              delay(1);
-              Serial.println("looping");
-              return;
-        }
-
       if(sensors.isTurnRequired){
-          Serial.println(error);
+         // Serial.println(error);
            if(error > 0 ){ //turn right
-                   Serial.println("isr right begins");
+                   //Serial.println("isr right begins");
                   enableInterrupt(isrPinLeft, isrRightTurnComplete, FALLING );
             
             } else if (error < 0){
-                  Serial.println("isr left begins");
+                 // Serial.println("isr left begins");
                   enableInterrupt(isrPinRight, isrLeftTurnComplete, FALLING );
                 
               }
@@ -85,11 +84,11 @@ void loop() {
             motors.drive((int)PID_value);
           }
 
-      }
+     /** }
       else if(!startDrive){
       invalidate();
       motors.stopMoving();
-    }
+    }**/
     delay(1);
 }
 
