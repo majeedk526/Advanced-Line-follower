@@ -5,16 +5,16 @@
 
 #define START 's'
 #define STOP 't'
-#define isrPinRight 7
-#define isrPinLeft 4
+#define isrPinRight 4
+#define isrPinLeft 5
 
-bool debug = true;
+bool debug = false;
 bool startDrive = false;
 volatile bool isrInProcess  = false;
 
 
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
-Sensor<2,3,4,5,6,7,8,9> sensors;
+Sensor<6,5,4,3,2> sensors;
 
 float Kp=8, Ki=5 ,Kd=0.03;
 
@@ -32,12 +32,18 @@ void setup() {
   Serial.begin(9600);
 
   debug = false;
+
+  pinMode(13,OUTPUT);
+  digitalWrite(13,HIGH);
+
+  invalidate();
   
 }
 
 void loop() {
-    
-    if(Serial.available()){
+
+
+      if(Serial.available()){
         c = Serial.read();
      
         if(c == START){ 
@@ -50,9 +56,8 @@ void loop() {
         if(debug){ btDebug(); }
       }
 
-      
-      
-    if(startDrive){ 
+      if(startDrive){
+     
       sensors.updateError();
       calculate_pid();
 
@@ -78,10 +83,10 @@ void loop() {
           
         } else {
             motors.drive((int)PID_value);
-          
-          } 
-    }
-    else if(!startDrive){
+          }
+
+      }
+      else if(!startDrive){
       invalidate();
       motors.stopMoving();
     }
@@ -98,7 +103,7 @@ void invalidate(){
 void calculate_pid()
 {
 
-    error = (sensors.error)
+    error = (sensors.error);
     P = error;
     I = I + error*0.001;
     D = (error - previous_error)/.001;

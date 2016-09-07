@@ -7,8 +7,8 @@ class DCMotors{
 
   public:
   
-  byte spConst = 62; //speed const
-  byte tunrSpeed = 45;
+  byte spConst = 59; //speed const
+  byte turnSpeed = 52;
 
   int LMSpeed, RMSpeed; // left and right motor speeds
 
@@ -57,7 +57,7 @@ class DCMotors{
 
      if(cor>0){
 
-      analogWrite(enL,60);
+      analogWrite(enL,turnSpeed);
       analogWrite(enR,0);
       digitalWrite(inpL1,LOW);
       digitalWrite(inpL2,HIGH);
@@ -70,7 +70,7 @@ class DCMotors{
       }
      else if(cor<0){
       analogWrite(enL,0);
-      analogWrite(enR,60);
+      analogWrite(enR,turnSpeed);
       digitalWrite(inpL1,LOW);
       digitalWrite(inpL2,HIGH);
       digitalWrite(inpR1,HIGH);
