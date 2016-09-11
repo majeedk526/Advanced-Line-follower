@@ -42,23 +42,8 @@ void setup() {
 void loop() {
 
 
-     /** if(Serial.available()){
-        c = Serial.read();
-     
-        if(c == START){ 
-          invalidate();
-          startDrive = true; }
-        else {
-          
-          startDrive = false;}
-        
-        if(debug){ btDebug(); }
-      }**/
-
-      //if(startDrive){
-
       if(isrInProcess){
-              //Serial.println("looping");
+              
               return;
         }
      
@@ -67,7 +52,7 @@ void loop() {
 
       if(sensors.isTurnRequired){
 
-          // Serial.println(error);
+          
            if(error < 0 ){ //turn right
                    //Serial.println("isr right begins");
                   enableInterrupt(isrPinLeft, isrRightTurnComplete, FALLING );
@@ -84,11 +69,6 @@ void loop() {
             motors.drive((int)PID_value);
           }
 
-     /** }
-      else if(!startDrive){
-      invalidate();
-      motors.stopMoving();
-    }**/
     delay(1);
 }
 
