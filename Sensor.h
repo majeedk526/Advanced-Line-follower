@@ -46,9 +46,9 @@ void updateError(){
     }
 
   if(!vps[0]) {error=-1;}
-  if(!vps[1]) {error=-0.3;}
-  if(!vps[2]) {error=0.15;}
-  if(!vps[3]) {error=0.3;}
+  if(!vps[1]) {error=-0.6;}
+  if(!vps[2]) {error=-0.25;}
+  if(!vps[3]) {error=0.6;}
   if(!vps[4]) {error=1;}
   
 }
@@ -63,7 +63,7 @@ void printArrayStatus(){
   Serial.print("\t");
   Serial.print(vps[3]);
   Serial.print("\t");
-  Serial.println(vps[4]);
+  Serial.print(vps[4]);
   
   }
 

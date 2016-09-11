@@ -14,9 +14,9 @@ volatile bool isrInProcess  = false;
 
 
 DCMotors<10,18,19,11,14,15> motors; //enL, L1, L2, enR, R1, R2
-Sensor<6,5,4,3,2> sensors;
+Sensor<2,3,4,5,6> sensors;
 
-float Kp=7.5, Ki=5 ,Kd=0.11;
+float Kp=7.5, Ki=5 ,Kd=0.08;
 
 float P=0, D=0;
 volatile float PID_value=0;
@@ -33,7 +33,7 @@ void setup() {
 
   debug = false;
 
-  delay(1000);
+  delay(300);
   
   invalidate();
   
@@ -58,7 +58,6 @@ void loop() {
       //if(startDrive){
 
       if(isrInProcess){
-              delay(1);
               //Serial.println("looping");
               return;
         }
@@ -67,12 +66,13 @@ void loop() {
       calculate_pid();
 
       if(sensors.isTurnRequired){
-         // Serial.println(error);
-           if(error > 0 ){ //turn right
+
+          // Serial.println(error);
+           if(error < 0 ){ //turn right
                    //Serial.println("isr right begins");
                   enableInterrupt(isrPinLeft, isrRightTurnComplete, FALLING );
             
-            } else if (error < 0){
+            } else if (error > 0){
                  // Serial.println("isr left begins");
                   enableInterrupt(isrPinRight, isrLeftTurnComplete, FALLING );
                 
@@ -103,6 +103,9 @@ void calculate_pid()
 {
 
     error = (sensors.error);
+    Serial.print("\t");
+    Serial.println(error);
+    
     P = error;
     I = I + error*0.001;
     D = (error - previous_error)/.001;
