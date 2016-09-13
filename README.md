@@ -8,3 +8,6 @@ Advanced line follower bot with PID controller
 
 ## External libraries 
 * [EnableInterrupt] (https://github.com/GreyGnome/EnableInterrupt)
+
+## Video
+* [Watch on youtube](https://www.youtube.com/embed/vTM6DuuMUrA)
